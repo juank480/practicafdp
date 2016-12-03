@@ -1,4 +1,76 @@
+import java.util.Scanner;
+
 public class practfinal {
-ahora si
+
 	public static void main(String[] args) {
+		//Menu principal
+		//menu_p();
+		int [][] tablero = new int [0][0];
+		modo_c(tablero);
+
+	}
+	public static int datos(int tamaño){
+
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		boolean c = false;
+		int datos = 0;
+		while(c==false){
+			try{
+				datos = in.nextInt();//coge este mismo valor todo el rato porque se almacena.
+				while(datos<0||datos>=tamaño){	
+					System.out.println("el número ha de estar entre 0 y " + tamaño);
+					datos = in.nextInt();
+				}
+				c=true;
+			}
+			catch(java.util.InputMismatchException e){
+				System.out.println("tipo de datos equivocado.");
+				in.next();//vacia el valor erroneo
+			}	
+		}return datos;
+	}	
+	public static void menu_p(){
 		
+		int t_menup = 3;
+		System.out.println("MODO DE JUEGO:\n1. Modo continuo\n2. Modo progresivo\n3. Iniciar todas las estadísticas del juego\n0. salir");
+		
+		int opt_menup = datos(t_menup);//opción elegida en el menu principal.
+		
+		switch(opt_menup){
+		case 0 : System.out.println("¡Hasta la próxima!");
+		case 1 :/*llamar método modo continuo */;
+		case 2 :/*llamar metodo modo progresivo*/;
+		case 3 :/*iniciar estadisticas*/; 
+		}
+	}
+	public static int [][] crear_tableroAleatorio(int [][] tablero,int tamaño/*,int colores*/){
+		tablero = new int[tamaño][tamaño];
+			for(int i = 0;i<tablero.length;i++){
+				for(int j = 0; j<tablero[0].length;j++){
+					tablero[i][j] = (int)Math.floor(Math.random()*(3)+1);
+				}
+			}
+			return tablero;
+	}
+	public static void imprimir_tablero(int [][]tablero){
+		for(int i = 0; i<tablero.length;i++){
+			System.out.println("");
+			for(int j = 0; j<tablero[0].length;j++){
+				System.out.print(tablero[i][j] + " ");
+			}
+		}
+	}
+	public static void modo_c(int [][] t){
+		int n_colores = 2;
+		String t_tablero = "PEQUEÑO (9X9)";
+		int tamaño_t = 9;
+		t=crear_tableroAleatorio(t, tamaño_t);
+		imprimir_tablero(t);
+		
+	}
+	public static void golpe(int i, int j){
+		
+	}
+
+}
