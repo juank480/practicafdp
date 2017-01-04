@@ -1,0 +1,127 @@
+import java.util.Scanner;
+
+public class practfinal {
+
+	public static void main(String[] args) {
+		//Menu principal
+		menu_p();
+		int [][] tablero = new int [0][0];
+		tablero = crear_tableroAleatorio(tablero, 5, 3);
+		imprimir_tablero(tablero);
+		while(true){
+			tablero = golpe(tablero, 3);
+			imprimir_tablero(tablero);
+		}
+		
+	}
+	public static int datos(int tamaño_inf,int tamaño_sup){
+
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		boolean c = false;
+		int datos = 0;
+		while(c==false){
+			try{
+				datos = in.nextInt();//coge este mismo valor todo el rato porque se almacena.
+				while(datos<tamaño_inf||datos>tamaño_sup){	
+					System.out.println("el número ha de estar entre " + tamaño_inf+ " y " + tamaño_sup);
+					datos = in.nextInt();
+				}
+				c=true;
+			}
+			catch(java.util.InputMismatchException e){
+				System.out.println("tipo de datos equivocado.");
+				in.next();//vacia el valor erroneo
+			}	
+		}return datos;
+	}	
+	public static void menu_p(){
+		
+		System.out.println("MODO DE JUEGO:\n1. Modo continuo\n2. Modo progresivo\n3. Iniciar todas las estadísticas del juego\n0. salir");
+		
+		int opc_menup = datos(0,3);//opción elegida en el menu principal.
+		
+		switch(opc_menup){
+		case 0 : System.out.println("¡Hasta la próxima!");
+		case 1 :/*llamar método modo continuo */;
+		case 2 :/*llamar metodo modo progresivo*/;
+		case 3 :/*iniciar estadisticas*/; 
+		}
+	}
+	public static int [][] crear_tableroAleatorio(int [][] tablero,int tamaño,int colores){
+		tamaño+=2;
+		tablero = new int[tamaño][tamaño];
+			for(int x = 0;x<tablero.length;x++){
+				for(int y = 0; y<tablero[x].length;y++){
+					tablero[x][y]=0;
+				}
+			}
+			for(int i = 1;i<tablero.length-1;i++){
+				for(int j = 1; j<tablero[i].length-1;j++){
+					tablero[i][j] = (int)Math.floor(Math.random()*(colores)+1);
+				}
+			}
+			return tablero;
+	}
+	public static void imprimir_tablero(int [][]tablero){
+		for(int i = 1; i<tablero.length-1;i++){
+			for(int j = 1; j<tablero[i].length-1;j++){
+				System.out.print(tablero[i][j] + " ");
+			}
+			System.out.println("");
+		}
+	}
+	public static void modo_c(int [][] tablero){
+		int n_colores = 2;
+		//String t_tablero = "PEQUEÑO (9X9)";
+		int tamaño_t = 11;
+		tablero=crear_tableroAleatorio(tablero, tamaño_t, n_colores);
+		imprimir_tablero(tablero);
+		
+	}
+	public static int[][] golpe(int [][]tablero, int n_colores){
+		int e = datos(1,n_colores);
+		int aux = tablero[1][1];
+		while(aux==e){
+			System.out.println("El movimiento no se realiza debido a que el nº introducido es el0 mismo nº de la primera casilla.");
+			e = datos(1,n_colores);
+		}
+		int i = 1; int j = 1;
+		do{
+		
+			tablero[i][j]=e;
+			tablero=siguiente_casilla(tablero, i, j, aux, e);
+			
+		}while(tablero[i+1][j]==aux||tablero[i-1][j]==aux||tablero[i][j-1]==aux||tablero[i][j+1]==aux);
+		
+		return tablero;
+	}
+	public static int[][] cambiar_valor(int[][]tablero,int i, int j, int aux, int e){
+		tablero[i][j]=e;
+		tablero=siguiente_casilla(tablero, i, j, aux, e);		
+		
+		return tablero;
+	}
+	public static int[][] siguiente_casilla(int[][]tablero,int i, int j, int aux, int e){
+		//do{
+			if(tablero[i][j+1]==aux){
+				j++;
+				cambiar_valor(tablero, i, j, aux, e);
+			}
+			if(tablero[i+1][j]==aux){
+				i++;
+				cambiar_valor(tablero, i, j, aux, e);
+			}
+			if(tablero[i][j-1]==aux){
+				j--;
+				cambiar_valor(tablero, i, j, aux, e);
+			}
+			if(tablero[i-1][j]==aux){
+				i--;
+				cambiar_valor(tablero, i, j, aux, e);
+			}
+		//}while(tablero[i+1][j]==aux||tablero[i-1][j]==aux||tablero[i][j-1]==aux||tablero[i][j+1]==aux);
+		return tablero;
+	}
+
+}
